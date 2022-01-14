@@ -1,36 +1,33 @@
 package guru.springframework.spring5webapp.domain;
 
 import javax.persistence.*;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 public class Book {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "book_id")
+    private Long id;
     private String title;
     private String isbn;
 
-    @ManyToMany
-    @JoinTable(name = "book_author",
+    @JoinTable(name = "author_book",
             joinColumns = @JoinColumn(name = "book_id"),
-    inverseJoinColumns = @JoinColumn(name = "author_id"))
-    private Set<Author> authors;
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    public Book(String title, String isbn, Set<Author> authors) {
+            inverseJoinColumns = @JoinColumn(name = "author_id"))
+    @ManyToMany
+    private List<Author> authors = new LinkedList<>();
+    public Book(String title, String isbn) {
         this.title = title;
         this.isbn = isbn;
-        this.authors = authors;
     }
 
-    public Set<Author> getAuthors() {
+    public List<Author> getAuthors() {
         return authors;
     }
 
-    public void setAuthors(Set<Author> authors) {
+    public void setAuthors(List<Author> authors) {
         this.authors = authors;
     }
 
