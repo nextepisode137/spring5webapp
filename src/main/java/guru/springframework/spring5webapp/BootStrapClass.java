@@ -30,13 +30,17 @@ public class BootStrapClass implements CommandLineRunner {
 
         book1.getAuthors().add(author1);
         book2.getAuthors().add(author2);
+        author1.getBooks().add(book1);
+        author2.getBooks().add(book2);
 
-        bookRepository.save(book1);
+
         authorRepository.save(author1);
+        bookRepository.save(book1);
 
-        bookRepository.save(book2);
+
+
         authorRepository.save(author2);
-
+        bookRepository.save(book2);
         System.out.println(bookRepository.count());
     }
 }

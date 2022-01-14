@@ -4,31 +4,26 @@ import javax.persistence.*;
 import java.util.*;
 
 @Entity
-@Table(name = "author")
 public class Author {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "author_id")
     private Long id;
     private String firstName;
     private String lastName;
 
     @ManyToMany(mappedBy = "authors")
-    private List<Book> books = new LinkedList<>();
+    private Set<Book> books = new HashSet<>();
+
+    public Author() {
+    }
 
     public Author(String firstName, String lastName) {
         this.firstName = firstName;
         this.lastName = lastName;
     }
 
-    public List<Book> getBooks() {
-        return books;
-    }
 
-    public void setBooks(List<Book> books) {
-        this.books = books;
-    }
 
     public String getFirstName() {
         return firstName;
@@ -46,27 +41,21 @@ public class Author {
         this.lastName = lastName;
     }
 
-
-
-    public Author() {
+    public Set<Book> getBooks() {
+        return books;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    @Id
-    public Long getId() {
-        return id;
+    public void setBooks(Set<Book> books) {
+        this.books = books;
     }
 
     @Override
     public String toString() {
         return "Author{" +
-                "firstName='" + firstName + '\'' +
+                "id=" + id +
+                ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", books=" + books +
-                ", id=" + id +
                 '}';
     }
 
@@ -74,12 +63,14 @@ public class Author {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
+
         Author author = (Author) o;
-        return Objects.equals(id, author.id);
+
+        return id != null ? id.equals(author.id) : author.id == null;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id);
+        return id != null ? id.hashCode() : 0;
     }
 }
